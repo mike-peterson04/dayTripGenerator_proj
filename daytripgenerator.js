@@ -1,7 +1,7 @@
 "use strict";
 function testMethod(){
 //This function is for testing purposes should only be used to call other functions or to print returned data to console                   
-
+console.log(entertainment(destination()));
 }
 
 function concierge(){
@@ -66,9 +66,54 @@ from ones available in the area and return it(string)*/
 
 
 }
-function entertainment(location){
+function entertainment(location,previousLocation=""){
 /*This function should recive a location(string) and use it to select from notable sites or activities
 nearby to spend time at and return selection(string)*/
+    let activity = ["Unstructured Fun", "Quiet Relaxation"]
+    if (location=="Temple Square"){
+        activity.push("Shopping");
+        activity.push("Garden Tour");
+        activity.push("Church History Museum");
+        activity.push("Visitors Center");
+    }
+    else if (location =="Big Cottonwood Canyon"){
+        activity.push("Hiking");
+        activity.push("Shooting");
+        activity.push("Picnic");
+
+    }
+    else if (location =="Lagoon"){
+        activity.push("Park Rides");
+        activity.push("Park Games");
+        activity.push("Shopping");
+
+    }
+    else if (location =="Pineview"){
+        activity.push("Swimming");
+        activity.push("Hiking");
+        activity.push("Boating");
+        activity.push("Fishing");
+
+    }
+    else if (location =="Timpanogos Cave"){
+        activity.push("Hiking");
+        activity.push("Timp Summit");
+        activity.push("Cave Tour");
+    }
+    else{
+        activity.push("Netflix Binge");
+        activity.push("Video Games");
+        activity.push("Read Book");
+        activity.push("Sleep");
+
+    }
+    let result = activity[Math.floor(Math.random()*activity.length)];
+    //if user has called function previously control to not return the same result
+    while (previousLocation == result){
+        result = activity[Math.floor(Math.random()*activity.length)]; 
+
+    }
+    return result;
 }
 
 testMethod()
