@@ -1,11 +1,57 @@
 "use strict";
 function testMethod(){
 //This function is for testing purposes should only be used to call other functions or to print returned data to console                   
-console.log(entertainment(destination()));
+concierge();
 }
 
 function concierge(){
 //This function should handle user interactions 
+    let location = destination();
+    let food = restaurant(location);
+    let activity = entertainment(location);
+//initial selection of itinerary
+    console.log("We have selected the following itinerary for you,");
+    console.log("You will be travelling to ("+location+")");
+    console.log("For dinner the selection is ("+ food+")");
+    console.log("For recreation the selection is ("+activity+")");
+    let repeat = prompt("Is this an acceptable itinerary? Y or N");
+/*getting basic logic to work realized that my first pass on other projects don't allow for simple re-rolling of the dice of for location
+as the other functions are dependant on it*/    
+        while (repeat.toUpperCase() == "N"){
+            switch (prompt("To change destination press 1:\nTo change dinner option press 2:\nTo change planned activity press 3")){
+                case "1":
+                    location = destination(location)
+                    break;
+                case "2":
+                    food = restaurant(location,food);
+                    break;
+                case "3":
+                    activity = entertainment(location,activity);
+                    break;    
+                default:
+                    repeat = null;
+                    break;
+        
+            }
+            console.log("We have selected the following itinerary for you,");
+            console.log("You will be travelling to ("+location+")");
+            console.log("For dinner the selection is ("+ food+")");
+            console.log("For recreation the selection is ("+activity+")");
+            repeat = prompt("Is this an acceptable itinerary? Y or N");
+
+        }
+        publish(location,food,activity);
+
+    }
+function publish(location,food,activity){
+    console.log("Publishing to Webpage");
+    document.getElementById("locHead").innerHTML = "Location";
+    document.getElementById("foodHead").innerHTML = "Dinner";
+    document.getElementById("funHead").innerHTML = "Entertainment";
+    document.getElementById("loc").innerHTML = location;
+    document.getElementById("food").innerHTML = food;
+    document.getElementById("fun").innerHTML = activity
+
 }
 
 
@@ -69,7 +115,7 @@ from ones available in the area and return it(string)*/
 function entertainment(location,previousLocation=""){
 /*This function should recive a location(string) and use it to select from notable sites or activities
 nearby to spend time at and return selection(string)*/
-    let activity = ["Unstructured Fun", "Quiet Relaxation"]
+    let activity = ["Unstructured Fun", "Quietly Relaxation"]
     if (location=="Temple Square"){
         activity.push("Shopping");
         activity.push("Garden Tour");
