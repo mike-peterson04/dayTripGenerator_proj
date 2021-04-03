@@ -15,7 +15,7 @@ function generate(){
     console.log("You will be travelling to ("+location+")");
     console.log("For dinner the selection is ("+ food[0]+")");
     console.log("For recreation the selection is ("+activity[0]+")");
-    console.log("For recreation the selection is ("+travel[0]+")");
+    console.log("your method of travel is ("+travel[0]+")");
     // ask users to validate the itinerary
     let itinerary = validate(location,food,activity,travel)
     //publish itinerary   
@@ -23,6 +23,7 @@ function generate(){
 
     }
 function publish(itinerary){
+    //publishes itinerary to html table as opposed to console log
     console.log("Publishing to Webpage");
     document.getElementById("locHead").innerHTML = "Location";
     document.getElementById("foodHead").innerHTML = "Dinner";
@@ -69,7 +70,7 @@ from ones available in the area and return it(string)*/
         case "Pineview":
             dining.push("Maddox");
             dining.push("Pizza Pie Cafe");
-         
+        break;
         case "Timpanogos Cave":
             dining.push("Thai Ruby");
             dining.push("Spicy Korea");
@@ -157,40 +158,82 @@ nearby to spend time at and return selection(string)*/
     return result;
 }
 function validate(location,food,activity,travel){
+    //this function takes the generated schedule and confirms it is the schedule the user wants
     let repeat = prompt("Is this an acceptable itinerary? Y or N");
         while (repeat.toUpperCase() == "N"){
             let warning;
-            switch (prompt("To change destination press 1:\nTo change dinner option press 2:\nTo change planned activity press 3")){
+            switch (prompt("To change destination press 1:\nTo change dinner option press 2:\nTo change planned activity press 3:\nTo change method of tavel press 4:")){
                 case "1":
-                    if (food[1]+activity[1]==2){
+                    //because where you are going can invalidate dining, travel, or entertainment options this confirms if changing the destination will affect any of the other  selections
+                    if (food[1]+activity[1]+travel[1]==3){
                         location = destination(location);
                     }
-                    else if (food[1]+activity[1]==0){
+                    else if (food[1]+activity[1]+travel[1]==0){
+                        warning = prompt("Your entire itinerary is only available at your current destination do you still want to change your destination? Y or N");
+                        warning = warning.toUpperCase();
+                       
+                        if (warning == "Y"||warning =="Yes") {
+                        location = destination(location);
+                        food = restaurant(location,food[0]);
+                        activity = entertainment(location,activity[0]);
+                        travel = travelMode(location,travel[0]); 
+                       }
+                    }
+                    else if(food[1]+activity[1]===0){
                         warning = prompt("Your dinner and entertainment is only available at your current destination do you still want to change your destination? Y or N");
                         warning = warning.toUpperCase();
                        
-                        if (warning == "Y"||"Yes") {
+                        if (warning == "Y"||warning =="Yes") {
                         location = destination(location);
                         food = restaurant(location,food[0]);
                         activity = entertainment(location,activity[0]); 
                        }
                     }
-                    else if(food[1]===0){
-                        warning = prompt("Your dinner location is only available at your current destination do you still want to change your destination? Y or N");
+                    else if(food[1]+travel[1]===0){
+                        warning = prompt("Your dinner location and travel method are only available at your current destination do you still want to change your destination? Y or N");
                         warning = warning.toUpperCase();
                        
-                        if (warning == "Y"||"Yes") {
+                        if (warning == "Y"||warning =="Yes") {
                         location = destination(location);
                         food = restaurant(location,food[0]); 
+                        travel = travelMode(location,travel[0]);
+                       }
+                    }
+                    else if(travel[1]+activity[1]===0){
+                        warning = prompt("Your entertainment and method of travel are only available at your current destination do you still want to change your destination? Y or N");
+                        warning = warning.toUpperCase();
+                       
+                        if (warning == "Y"||warning =="Yes") {
+                        location = destination(location);
+                        activity = entertainment(location,activity[0]);
+                        travel = travelMode(location,travel[0]);  
                        }
                     }
                     else{
+                        if(activity[1]==0){
                             warning = prompt("Your activity selection is only available at your current destination do you still want to change your destination? Y or N");
                             warning = warning.toUpperCase();
-                            if (warning == "Y"||"Yes") {
+                            if (warning == "Y"||warning =="Yes") {
                                 location = destination(location);
                                 activity = entertainment(location,activity[0]); 
                             }
+                        }
+                        else if(food[1]=0){
+                            warning = prompt("Your dining selection is only available at your current destination do you still want to change your destination? Y or N");
+                            warning = warning.toUpperCase();
+                            if (warning == "Y"||warning =="Yes") {
+                                location = destination(location);
+                                food = restaurant(location,food[0]); 
+                            }
+                        }
+                        else{
+                            warning = prompt("Your method of travel is only available at your current destination do you still want to change your destination? Y or N");
+                            warning = warning.toUpperCase();
+                            if (warning == "Y"||warning =="Yes") {
+                                location = destination(location);
+                                travel = travelMode(location,travel[0]); 
+                            }
+                        }
                     }
                     break;
                     
@@ -199,6 +242,9 @@ function validate(location,food,activity,travel){
                     break;
                 case "3":
                     activity = entertainment(location,activity[0]);
+                    break;
+                case "4":
+                    travel = travelMode(location,travel[0]);
                     break;    
                 default:
                     repeat = null;
@@ -209,6 +255,7 @@ function validate(location,food,activity,travel){
             console.log("You will be travelling to ("+location+")");
             console.log("For dinner the selection is ("+ food[0]+")");
             console.log("For recreation the selection is ("+activity[0]+")");
+            console.log("your method of travel is ("+travel[0]+")");
             repeat = prompt("Is this an acceptable itinerary? Y or N");
         }
         let itinerary =[location,food[0],activity[0],travel[0]]
