@@ -1,9 +1,4 @@
 "use strict";
-function testMethod(){
-//This function is for testing purposes should only be used to call other functions or to print returned data to console                   
-generate();
-}
-
 function generate(){
 //This function should generate, and request validation and publication of the schedule
     let location = destination();
@@ -23,7 +18,7 @@ function generate(){
 
     }
 function publish(itinerary){
-    //publishes itinerary to html table as opposed to console log
+    //publishes itinerary to html table
     console.log("Publishing to Webpage");
     document.getElementById("locHead").innerHTML = "Location";
     document.getElementById("foodHead").innerHTML = "Dinner";
@@ -33,6 +28,8 @@ function publish(itinerary){
     document.getElementById("food").innerHTML = itinerary[1];
     document.getElementById("fun").innerHTML = itinerary[2];
     document.getElementById("travel").innerHTML = itinerary[3];
+    //publish itinerary to console
+    console.log(itinerary);
 
 }
 
@@ -50,7 +47,8 @@ function destination(previousDestination=""){
 }
 function restaurant(location, previousLocation =""){
 /*this function should receive a location(string) when called which will then select a random resturant
-from ones available in the area and return it(string)*/
+from ones available in the area and return it as an array [string,1 or 0] 
+the one or 0 will be used to determine if the restaurant is location exclusive */
     let dining = ["prepare food/picnic", "Fast Food","Cafe Rio", "Five Guys"];
     let common = dining.slice();
     //adding additional opptions to dining array based on location specific choices
@@ -86,7 +84,7 @@ from ones available in the area and return it(string)*/
         return "error, resturant function recieved invalid argument"
     }
     let result = dining[Math.floor(Math.random()*dining.length)];
-    //if user has called function previously control to not return the same result
+    //if user has called function previously control to not return the same result currently only works for last option selected
     while (previousLocation == result){
         result = dining[Math.floor(Math.random()*dining.length)]; 
 
@@ -103,7 +101,7 @@ from ones available in the area and return it(string)*/
 }
 function entertainment(location,previousLocation=""){
 /*This function should recive a location(string) and use it to select from notable sites or activities
-nearby to spend time at and return selection(string)*/
+nearby to spend time at and return selection[string,1 or 0] for the same reason as described on line 48*/
     let activity = ["Unstructured Fun", "Quietly Relaxation"]
     let common = activity.slice();
     if (location=="Temple Square"){
@@ -262,8 +260,8 @@ function validate(location,food,activity,travel){
         return itinerary
     }
 function travelMode(location, previousTransit=""){
-    /*This function should recive a location(string) and use it to select from notable sites or activities
-nearby to spend time at and return selection(string)*/
+/*This function should recive a location(string) and use it to select from methods of travel to get to destination
+ and return selection[string,1 or 0] for the same reason as described on line 48*/
 let transit = ["Drive", "Bike","Bus"]
 let common = transit.slice();
 if (location=="Temple Square"){
@@ -272,7 +270,7 @@ if (location=="Temple Square"){
     transit.push("FrontRunner");
 }
 else if (location =="Big Cottonwood Canyon"){
-
+//this location and the other locations specifically not listed don't have other methods of travel to reach
 }
 else if (location =="Lagoon"){
     transit.push("Trax");
@@ -281,6 +279,7 @@ else if (location =="Lagoon"){
 }
 
 else if(location =="Stay Home") {
+    //is it really travelling to stay home? regardless walk should be the only option
     transit = undefined;
     transit = ["Walk"];
 
@@ -300,4 +299,4 @@ else{
 return result;
 }
 
-testMethod();
+generate();
